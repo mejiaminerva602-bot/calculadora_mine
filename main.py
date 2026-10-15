@@ -1,30 +1,24 @@
 from nicegui import ui
+import os
 
+# Tu calculadora
 def sumar():
     try:
-        resultado.text = (
-            f'Resultado: {float(numero1.value) + float(numero2.value)}'
-        )
+        r = float(num1.value) + float(num2.value)
+        resultado.set_text(f'Resultado: {r}')
     except:
-        resultado.text = 'Ingresa numeros validos'
+        resultado.set_text('Pon números válidos')
 
-def limpiar():
-    numero1.value = ''
-    numero2.value = ''
-    resultado.text = 'Resultado: 0'
+with ui.column().classes('items-center w-full mt-10'):
+    ui.label('Calculadora Mine').classes('text-3xl font-bold text-purple-600')
+    
+    num1 = ui.input(label='Número 1').classes('w-64')
+    num2 = ui.input(label='Número 2').classes('w-64')
+    
+    ui.button('Sumar', on_click=sumar).classes('bg-purple-500 text-white w-64')
+    
+    resultado = ui.label('Resultado: ').classes('text-xl mt-4')
 
-with ui.column().classes('w-full h-screen justify-center items-center').style('background-color: purple;').classes('items-center'):
-    with ui.column().classes('items-center justify-center').style('background-color: purple;').classes('items-center'):
-        ui.label('Calculadora de Suma').style('color: white; font-size: 24px; font-weight: bold').classes('text-center')
-
-        numero1 = ui.input('Numero 1').props('dark outlined').style('width: 300px')
-        numero2 = ui.input('Numero 2').props('dark outlined').style('width: 300px')
-
-        with ui.row().classes('w-full justify-center no-wrap').style('gap: 10px'):
-            ui.button('SUMAR', icon='calculate', color='green', on_click=sumar).style('color: white; width: 140px')
-            ui.button('LIMPIAR', icon='delete', color='red', on_click=limpiar).style('color: white; width: 140px')
-
-        resultado = ui.label('Resultado: 0').style('color: white; font-size: 20px')
-
-# CAMBIO PARA RENDER:
-ui.run(host='0.0.0.0', port=8080)
+# Esto es lo que faltaba para Render
+port = int(os.environ.get("PORT", 8080))
+ui.run(host='0.0.0.0', port=port)
